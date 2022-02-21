@@ -1,0 +1,18 @@
+app:
+  name: fly/example
+  debug: true
+
+http-server:
+  addr: :7070
+  graceful-shutdown-timeout: 10s
+
+gin:
+  mode: debug # debug, release, test
+
+# database
+database:
+  example:
+    adapter: mysql
+    dsn: test:test@tcp(mysql_host:3306)/database?parseTime=True&loc=UTC&multiStatements=true&charset=utf8mb4
+    max-idle-connections: 50
+    max-open-connections: 50
