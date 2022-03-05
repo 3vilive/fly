@@ -1,4 +1,4 @@
-package db
+package storage
 
 import "github.com/spf13/viper"
 

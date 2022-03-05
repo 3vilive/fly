@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/3vilive/fly"
-	"github.com/3vilive/fly/pkg/db"
 	"github.com/3vilive/fly/pkg/log"
+	"github.com/3vilive/fly/pkg/storage"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
@@ -20,7 +20,7 @@ func main() {
 			})
 
 			e.GET("/data", func(c *gin.Context) {
-				db, err := db.GetDatabase("example")
+				db, err := storage.GetDatabase("example")
 				if err != nil {
 					c.JSON(http.StatusInternalServerError, gin.H{
 						"msg": err.Error(),

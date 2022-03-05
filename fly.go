@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/3vilive/fly/pkg/config"
-	"github.com/3vilive/fly/pkg/db"
 	"github.com/3vilive/fly/pkg/log"
+	"github.com/3vilive/fly/pkg/storage"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"github.com/spf13/viper"
@@ -37,8 +37,8 @@ func initComponenets() error {
 		return errors.Wrap(err, "init log error")
 	}
 
-	// init db
-	if err := db.InitDatabase(); err != nil {
+	// init storage
+	if err := storage.InitDatabase(); err != nil {
 		return errors.Wrap(err, "init db error")
 	}
 
@@ -46,7 +46,7 @@ func initComponenets() error {
 }
 
 func deinitComponenets() {
-	if err := db.DeinitDatabase(); err != nil {
+	if err := storage.DeinitDatabase(); err != nil {
 		log.Error("deinit db error", zap.Error(err))
 	} else {
 		log.Info("deinit database ok")
