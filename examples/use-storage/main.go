@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"net/http"
 
 	"github.com/3vilive/fly"
@@ -17,6 +18,26 @@ func main() {
 			e.GET("/ping", func(c *gin.Context) {
 				log.Info("http-server.addr", zap.String("http-server.addr", viper.GetString("http-server.addr")))
 				c.String(http.StatusOK, "pong")
+			})
+
+			e.GET("/counter", func(c *gin.Context) {
+				rdb, err := storage.GetRedis("example")
+				if err != nil {
+					c.JSON(http.StatusInternalServerError, gin.H{
+						"msg": err.Error(),
+					})
+					return
+				}
+
+				count, err := rdb.Incr(context.Background(), "fly:counter").Result()
+				if err != nil {
+					c.JSON(http.StatusInternalServerError, gin.H{
+						"msg": err.Error(),
+					})
+					return
+				}
+
+				c.JSON(http.StatusOK, gin.H{"count": count})
 			})
 
 			e.GET("/data", func(c *gin.Context) {

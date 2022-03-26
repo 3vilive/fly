@@ -16,3 +16,9 @@ database:
     dsn: test:test@tcp(mysql_host:3306)/database?parseTime=True&loc=UTC&multiStatements=true&charset=utf8mb4
     max-idle-connections: 50
     max-open-connections: 50
+
+redis:
+  example:
+    address: 127.0.0.1:6379
+    password: ""
+    db: 0

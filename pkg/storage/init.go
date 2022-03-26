@@ -3,17 +3,23 @@ package storage
 import "github.com/spf13/viper"
 
 var (
-	dbManager *DatabaseManager
+	dbManager    *DatabaseManager
+	redisManager *RedisManager
 )
 
-func InitDatabase() error {
+func InitStorage() error {
 	dbManager = NewDatabaseManager(viper.Sub("database"))
+	redisManager = NewRedisManager(viper.Sub("redis"))
 	return nil
 }
 
-func DeinitDatabase() error {
-	if dbManager == nil {
-		return nil
+func DeinitStorage() error {
+	if dbManager != nil {
+		dbManager.Close()
 	}
-	return dbManager.Close()
+	if redisManager != nil {
+		redisManager.Close()
+	}
+
+	return nil
 }

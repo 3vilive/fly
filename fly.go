@@ -38,7 +38,7 @@ func initComponenets() error {
 	}
 
 	// init storage
-	if err := storage.InitDatabase(); err != nil {
+	if err := storage.InitStorage(); err != nil {
 		return errors.Wrap(err, "init db error")
 	}
 
@@ -46,10 +46,10 @@ func initComponenets() error {
 }
 
 func deinitComponenets() {
-	if err := storage.DeinitDatabase(); err != nil {
-		log.Error("deinit db error", zap.Error(err))
+	if err := storage.DeinitStorage(); err != nil {
+		log.Error("deinit storage error", zap.Error(err))
 	} else {
-		log.Info("deinit database ok")
+		log.Info("deinit storage ok")
 	}
 }
 

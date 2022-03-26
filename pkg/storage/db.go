@@ -134,5 +134,8 @@ func (m *DatabaseManager) Close() error {
 }
 
 func GetDatabase(name string) (*gorm.DB, error) {
+	if dbManager == nil {
+		return nil, errors.New("database manager not init")
+	}
 	return dbManager.GetDatabase(name)
 }
