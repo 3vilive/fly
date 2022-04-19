@@ -51,6 +51,8 @@ func deinitComponenets() {
 	} else {
 		log.Info("deinit storage ok")
 	}
+
+	log.DeinitLog()
 }
 
 func Bootstrap(run func() error) error {
@@ -75,16 +77,22 @@ func BootstrapHttpServer(initGinEngine func(*gin.Engine), initHttpServer func(*h
 	return Bootstrap(func() error {
 		// init gin engine
 		gin.SetMode(viper.GetString("gin.mode"))
-		r := gin.Default()
+
+		r := gin.New()
+		r.Use(gin.LoggerWithWriter(log.NewLogProxy("gin")))
+		r.Use(gin.Recovery())
+
 		initGinEngine(r)
 
 		// http server
+		addr := viper.GetString("http-server.addr")
 		httpServer := &http.Server{
-			Addr:    viper.GetString("http-server.addr"),
+			Addr:    addr,
 			Handler: r,
 		}
 		initHttpServer(httpServer)
 
+		log.Info("http server start", zap.String("addr", addr))
 		return RunHttpServer(httpServer)
 	})
 }

@@ -22,3 +22,13 @@ redis:
     address: 127.0.0.1:6379
     password: ""
     db: 0
+
+log:
+    logger:
+      filename: log/app.log
+      maxsize: 100
+      maxage: 7
+      maxbackups: 10
+      compress: false
+    rotate: 1h
+    level: info
