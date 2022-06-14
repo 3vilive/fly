@@ -6,7 +6,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/3vilive/fly/pkg/log"
+	"github.com/3vilive/fly/pkg/flylog"
 	"github.com/pkg/errors"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
@@ -124,7 +124,7 @@ func (m *DatabaseManager) Close() error {
 	defer m.mu.Unlock()
 	for name, wrapDb := range m.databaseMap {
 		if err := wrapDb.Close(); err != nil {
-			log.Error("close database error", zap.String("database", name), zap.Error(err))
+			flylog.Error("close database error", zap.String("database", name), zap.Error(err))
 		}
 
 		delete(m.databaseMap, name)

@@ -8,7 +8,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/3vilive/fly/pkg/log"
+	"github.com/3vilive/fly/pkg/flylog"
 	"github.com/pkg/errors"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
@@ -33,7 +33,7 @@ func RunHttpServer(server *http.Server) error {
 		defer cancel()
 
 		if err := server.Shutdown(ctx); err != nil {
-			log.Error("graceful shutdown server error", zap.Error(err))
+			flylog.Error("graceful shutdown server error", zap.Error(err))
 		}
 
 		waitShutdown <- true

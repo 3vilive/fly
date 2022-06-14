@@ -1,4 +1,4 @@
-package log
+package flylog
 
 import (
 	"context"

@@ -4,7 +4,7 @@ import (
 	"context"
 	"sync"
 
-	"github.com/3vilive/fly/pkg/log"
+	"github.com/3vilive/fly/pkg/flylog"
 	"github.com/go-redis/redis/v8"
 	"github.com/pkg/errors"
 	"github.com/spf13/viper"
@@ -90,7 +90,7 @@ func (m *RedisManager) Close() error {
 	defer m.mu.Unlock()
 	for name, wrapRedis := range m.redisMap {
 		if err := wrapRedis.Close(); err != nil {
-			log.Error("close redis error", zap.String("redis", name), zap.Error(err))
+			flylog.Error("close redis error", zap.String("redis", name), zap.Error(err))
 		}
 
 		delete(m.redisMap, name)

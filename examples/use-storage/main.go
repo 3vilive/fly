@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/3vilive/fly"
-	"github.com/3vilive/fly/pkg/log"
+	"github.com/3vilive/fly/pkg/flylog"
 	"github.com/3vilive/fly/pkg/storage"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
@@ -16,7 +16,7 @@ func main() {
 	err := fly.BootstrapHttpServer(
 		func(e *gin.Engine) {
 			e.GET("/ping", func(c *gin.Context) {
-				log.Info("http-server.addr", zap.String("http-server.addr", viper.GetString("http-server.addr")))
+				flylog.Info("http-server.addr", zap.String("http-server.addr", viper.GetString("http-server.addr")))
 				c.String(http.StatusOK, "pong")
 			})
 

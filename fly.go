@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/3vilive/fly/pkg/config"
-	"github.com/3vilive/fly/pkg/log"
+	"github.com/3vilive/fly/pkg/flylog"
 	"github.com/3vilive/fly/pkg/storage"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
@@ -33,7 +33,7 @@ func initComponenets() error {
 	}
 
 	// init logger
-	if err := log.InitLog(); err != nil {
+	if err := flylog.InitLog(); err != nil {
 		return errors.Wrap(err, "init log error")
 	}
 
@@ -47,12 +47,12 @@ func initComponenets() error {
 
 func deinitComponenets() {
 	if err := storage.DeinitStorage(); err != nil {
-		log.Error("deinit storage error", zap.Error(err))
+		flylog.Error("deinit storage error", zap.Error(err))
 	} else {
-		log.Info("deinit storage ok")
+		flylog.Info("deinit storage ok")
 	}
 
-	log.DeinitLog()
+	flylog.DeinitLog()
 }
 
 func Bootstrap(run func() error) error {
@@ -79,7 +79,7 @@ func BootstrapHttpServer(initGinEngine func(*gin.Engine), initHttpServer func(*h
 		gin.SetMode(viper.GetString("gin.mode"))
 
 		r := gin.New()
-		r.Use(gin.LoggerWithWriter(log.NewLogProxy("gin")))
+		r.Use(gin.LoggerWithWriter(flylog.NewLogProxy("gin")))
 		r.Use(gin.Recovery())
 
 		initGinEngine(r)
@@ -92,7 +92,7 @@ func BootstrapHttpServer(initGinEngine func(*gin.Engine), initHttpServer func(*h
 		}
 		initHttpServer(httpServer)
 
-		log.Info("http server start", zap.String("addr", addr))
+		flylog.Info("http server start", zap.String("addr", addr))
 		return RunHttpServer(httpServer)
 	})
 }
