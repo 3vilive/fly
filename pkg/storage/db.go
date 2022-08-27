@@ -85,19 +85,19 @@ func (m *DatabaseManager) GetDatabase(name string) (*gorm.DB, error) {
 		return wrapDb.db, nil
 	}
 
-	adapater := configOfDb.GetString("adapter")
+	adapter := configOfDb.GetString("adapter")
 	var (
 		db  *gorm.DB
 		err error
 	)
-	switch adapater {
+	switch adapter {
 	case AdapterMySQL:
 		db, err = gorm.Open(mysql.Open(configOfDb.GetString("dsn")))
 		if err != nil {
 			return nil, errors.Wrap(err, "open mysql db conn error")
 		}
 	default:
-		return nil, fmt.Errorf("unsupported adapater: %s", adapater)
+		return nil, fmt.Errorf("unsupported adapter: %s", adapter)
 	}
 
 	if configOfDb.GetBool("debug") {
