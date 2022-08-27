@@ -26,7 +26,7 @@ func init() {
 	flag.StringVar(&configFile, "config", "configs/default.yml", "app config")
 }
 
-func initComponenets() error {
+func initComponents() error {
 	// init config
 	if err := config.InitConfig(configFile); err != nil {
 		return errors.Wrap(err, "init config error")
@@ -45,7 +45,7 @@ func initComponenets() error {
 	return nil
 }
 
-func deinitComponenets() {
+func deinitComponents() {
 	if err := storage.DeinitStorage(); err != nil {
 		flylog.Error("deinit storage error", zap.Error(err))
 	} else {
@@ -61,8 +61,8 @@ func Bootstrap(run func() error) error {
 		flag.Parse()
 	}
 
-	defer deinitComponenets()
-	if err := initComponenets(); err != nil {
+	defer deinitComponents()
+	if err := initComponents(); err != nil {
 		return errors.Wrap(err, "init components error")
 	}
 
