@@ -35,6 +35,15 @@ func (w *WrapGormDb) Close() error {
 		return err
 	}
 
+	// waiting in use connections for 30 seconds
+	for i := 0; i < 30; i++ {
+		if idb.Stats().InUse > 0 {
+			time.Sleep(time.Second)
+		} else {
+			break
+		}
+	}
+
 	return idb.Close()
 }
 
